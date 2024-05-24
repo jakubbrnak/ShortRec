@@ -43,7 +43,9 @@ struct RecordsView: View {
                                 print("Started Recording")
                                 // Call your ViewModel's startRecording function here
                             } */
-                            viewModel.startRecording()
+                            if !viewModel.isRecording{
+                                viewModel.startRecording()
+                            }
                         }
                         .onEnded { _ in
                      /*       if viewModel.isRecording {
