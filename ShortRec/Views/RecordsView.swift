@@ -21,9 +21,9 @@ struct RecordsView: View {
     @StateObject var viewModel = RecordsViewModel()
 
     var body: some View {
-        RecordItemView()
-        
+
         VStack {
+            RecordItemView()
             Text(viewModel.isRecording ? "Recording..." : "Hold to Record")
                 .padding()
                 .foregroundColor(.white)
@@ -40,6 +40,7 @@ struct RecordsView: View {
                             viewModel.stopRecording()
                         }
                 )
+                .padding(.bottom, 50)
             
             Spacer()
         }

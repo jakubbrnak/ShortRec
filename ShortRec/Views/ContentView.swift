@@ -12,7 +12,16 @@ struct ContentView: View {
     
     var body: some View {
         if viewModel.isSignedIn, !viewModel.currentUserId.isEmpty {
-            RecordsView()
+            TabView{
+                RecordsView()
+                    .tabItem {
+                        Label("Records", systemImage: "mic.fill")
+                    }
+                ProfileView()
+                    .tabItem{
+                        Label("Profile", systemImage: "person.circle")
+                            }
+            }
         }
         else{
             LoginView()

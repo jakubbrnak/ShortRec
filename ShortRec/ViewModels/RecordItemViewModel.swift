@@ -43,20 +43,22 @@ class RecordItemViewModel: ObservableObject {
             }
             
             for document in documents {
-                if let fileName = document.data()["fileName"] as? String,
-                   let urlString = document.data()["url"] as? String,
+                if let showName = document.data()["showName"] as? String,
+                    let fileName = document.data()["fileName"] as? String,
+                   let id = document.data()["id"] as? String,
+                   let urlString = document.data()["remoteURL"] as? String,
                    let timestamp = document.data()["timestamp"] as? Timestamp,
                    let remoteURL = URL(string: urlString) {
-                    if !self.recordings.contains(where: { $0.localURL == remoteURL }) {
-                        self.addRecordingToList(name: fileName, remoteURL: remoteURL, timestamp: timestamp)
+                    if !self.recordings.contains(where: { $0.remoteURL == remoteURL }) {
+                        self.addRecordingToList(showName: showName, id: id, fileName: fileName, remoteURL: remoteURL, timestamp: timestamp)
                     }
                 }
             }
         }
     }
     
-    private func addRecordingToList(name: String, remoteURL: URL, timestamp: Timestamp) {
-        let recording = Record(showname: "New Record",name: name, localURL: remoteURL, timestamp:timestamp)
+    private func addRecordingToList(showName: String, id: String, fileName: String, remoteURL: URL, timestamp: Timestamp) {
+        let recording = Record(showName: showName, id: id, fileName: fileName, remoteURL: remoteURL, timestamp: timestamp)
         DispatchQueue.main.async {
             self.recordings.append(recording)
         }
@@ -64,9 +66,9 @@ class RecordItemViewModel: ObservableObject {
     
     
     var player: AVPlayer?
-    @Published var currentlyPlayingId: UUID? = nil
+    @Published var currentlyPlayingId: String? = nil
     
-    func play(url: URL, id: UUID) {
+    func play(url: URL, id: String) {
         //isPlaying = true
         currentlyPlayingId = id
         player = AVPlayer(url: url)
@@ -80,7 +82,7 @@ class RecordItemViewModel: ObservableObject {
         player = nil
     }
     
-    func delete(id: UUID, url: URL) {
+    func delete(id: String, url: URL) {
         guard let user = Auth.auth().currentUser else {
             print("User not logged in")
             return
@@ -100,7 +102,7 @@ class RecordItemViewModel: ObservableObject {
             }
             
             // File deleted successfully from Storage, now delete the Firestore document
-            db.collection("users").document(user.uid).collection("audioRecords").whereField("url", isEqualTo: url.absoluteString).getDocuments { snapshot, error in
+            db.collection("users").document(user.uid).collection("audioRecords").whereField("remoteURL", isEqualTo: url.absoluteString).getDocuments { snapshot, error in
                 if let error = error {
                     print("Error fetching Firestore document to delete: \(error.localizedDescription)")
                     return

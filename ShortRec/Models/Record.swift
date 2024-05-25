@@ -9,9 +9,9 @@ import Foundation
 import Firebase
 
 struct Record: Identifiable {
-    let showname: String
-    let id = UUID()
-    let name: String
-    let localURL: URL
+    let showName: String
+    let id: String
+    let fileName: String
+    let remoteURL: URL
     let timestamp: Timestamp
 }

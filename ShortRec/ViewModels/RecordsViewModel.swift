@@ -115,8 +115,10 @@ class RecordsViewModel: ObservableObject {
                 let docRef = db.collection("users").document(user.uid).collection("audioRecords").document()
                 
                 let audioData: [String: Any] = [
+                    "showName": "New Record",
+                    "id" : UUID().uuidString,
                     "fileName": fileURL.lastPathComponent,
-                    "url": downloadURL.absoluteString,
+                    "remoteURL": downloadURL.absoluteString,
                     "timestamp": Timestamp()
                 ]
                 
@@ -127,7 +129,7 @@ class RecordsViewModel: ObservableObject {
                         print("Successfully stored metadata in Firestore")
                         
                         // Delete the local file after successful upload
-                        //self.deleteLocalFile(at: fileURL)
+                        self.deleteLocalFile(at: fileURL)
                         newRecordUploaded.send()
                     }
                 }
