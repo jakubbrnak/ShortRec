@@ -28,6 +28,8 @@
 		3B33F9EC2BE7D7DD008F823E /* RecordsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B33F9EB2BE7D7DD008F823E /* RecordsViewModel.swift */; };
 		3B33F9EE2BE7FAB3008F823E /* RecordItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B33F9ED2BE7FAB3008F823E /* RecordItemView.swift */; };
 		3B33F9F02BE7FACA008F823E /* RecordItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B33F9EF2BE7FACA008F823E /* RecordItemViewModel.swift */; };
+		3B6900242C00A9C0000D2F81 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6900232C00A9C0000D2F81 /* Record.swift */; };
+		3B6900262C0134C4000D2F81 /* Notificaiton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6900252C0134C4000D2F81 /* Notificaiton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +51,8 @@
 		3B33F9EB2BE7D7DD008F823E /* RecordsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordsViewModel.swift; sourceTree = "<group>"; };
 		3B33F9ED2BE7FAB3008F823E /* RecordItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordItemView.swift; sourceTree = "<group>"; };
 		3B33F9EF2BE7FACA008F823E /* RecordItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordItemViewModel.swift; sourceTree = "<group>"; };
+		3B6900232C00A9C0000D2F81 /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
+		3B6900252C0134C4000D2F81 /* Notificaiton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notificaiton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +110,7 @@
 			isa = PBXGroup;
 			children = (
 				3B33F9E12BE7CDB6008F823E /* User.swift */,
+				3B6900232C00A9C0000D2F81 /* Record.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -142,6 +147,7 @@
 				3B33F9B82BE7BD5F008F823E /* ShortRecApp.swift */,
 				3B33F9BC2BE7BD61008F823E /* Assets.xcassets */,
 				3B33F9CF2BE7C1F3008F823E /* GoogleService-Info.plist */,
+				3B6900252C0134C4000D2F81 /* Notificaiton.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -228,7 +234,9 @@
 			files = (
 				3B33F9BB2BE7BD5F008F823E /* ContentView.swift in Sources */,
 				3B33F9EA2BE7D7C5008F823E /* RecordsView.swift in Sources */,
+				3B6900242C00A9C0000D2F81 /* Record.swift in Sources */,
 				3B33F9E42BE7CE12008F823E /* RegisterView.swift in Sources */,
+				3B6900262C0134C4000D2F81 /* Notificaiton.swift in Sources */,
 				3B33F9EC2BE7D7DD008F823E /* RecordsViewModel.swift in Sources */,
 				3B33F9F02BE7FACA008F823E /* RecordItemViewModel.swift in Sources */,
 				3B33F9DE2BE7CAF6008F823E /* MyButton.swift in Sources */,

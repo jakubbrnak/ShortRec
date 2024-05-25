@@ -21,13 +21,7 @@ struct RecordsView: View {
     @StateObject var viewModel = RecordsViewModel()
 
     var body: some View {
-        List(items, id: \.self) { item in
-            // Display each string using a Text view
-            Text(item)
-                .font(.headline) // Adjust font style as needed
-                .padding(.vertical, 5) // Add some vertical padding
-        }
-        .navigationTitle("Records List")
+        RecordItemView()
         
         VStack {
             Text(viewModel.isRecording ? "Recording..." : "Hold to Record")
@@ -38,21 +32,11 @@ struct RecordsView: View {
                 .gesture(
                     DragGesture(minimumDistance: 0) // Minimum distance ensures any touch is registered
                         .onChanged { _ in
-                     /*       if !viewModel.isRecording {
-                                viewModel.isRecording = true
-                                print("Started Recording")
-                                // Call your ViewModel's startRecording function here
-                            } */
                             if !viewModel.isRecording{
                                 viewModel.startRecording()
                             }
                         }
                         .onEnded { _ in
-                     /*       if viewModel.isRecording {
-                                viewModel.isRecording = false
-                                print("Stopped Recording")
-                                // Call your ViewModel's stopRecording function here
-                            } */
                             viewModel.stopRecording()
                         }
                 )

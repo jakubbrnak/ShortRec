@@ -10,6 +10,7 @@ import FirebaseFirestore
 import Foundation
 import AVFoundation
 import FirebaseStorage
+import Combine
 
 class RecordsViewModel: ObservableObject {
     private var audioRecorder: AVAudioRecorder?
@@ -126,7 +127,8 @@ class RecordsViewModel: ObservableObject {
                         print("Successfully stored metadata in Firestore")
                         
                         // Delete the local file after successful upload
-                        self.deleteLocalFile(at: fileURL)
+                        //self.deleteLocalFile(at: fileURL)
+                        newRecordUploaded.send()
                     }
                 }
             }
@@ -141,4 +143,6 @@ class RecordsViewModel: ObservableObject {
             print("Error deleting local file: \(error.localizedDescription)")
         }
     }
+    
+   
 }
