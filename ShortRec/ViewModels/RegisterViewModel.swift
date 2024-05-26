@@ -9,13 +9,18 @@ import FirebaseAuth
 import Foundation
 
 class RegisterViewModel: ObservableObject{
+    
+    // Variables to store inserted data
     @Published var email = ""
     @Published var password = ""
     @Published var name = ""
+    
+    // Variable to store error messages
     @Published  var errorMessage = ""
     
     init() {}
     
+    // Create new user using FirebaseAuth
     func register(){
         guard validate() else {
             return
@@ -28,6 +33,7 @@ class RegisterViewModel: ObservableObject{
         }
     }
     
+    // Create user record in Firebase Firestore database
     private func insertUserRecord(id: String){
         let newUser = User(id: id, name: name, email: email, joined: Timestamp())
         
@@ -38,8 +44,6 @@ class RegisterViewModel: ObservableObject{
                 .setData(userData) { error in
                     if let error = error {
                         print("Error saving user record: \(error)")
-                    } else {
-                        print("User record successfully written!")
                     }
                 }
         } else {
@@ -47,6 +51,7 @@ class RegisterViewModel: ObservableObject{
         }
     }
     
+    // Validate user inputs
     private func validate() -> Bool{
         errorMessage = ""
         guard !email.trimmingCharacters(in: .whitespaces).isEmpty, 

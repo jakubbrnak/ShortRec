@@ -10,18 +10,22 @@ import AVKit
 import Combine
 
 struct RecordItemView: View {
-    @StateObject var viewModel = RecordItemViewModel(newRecordUploaded: newRecordUploaded)
+    @StateObject var viewModel = RecordItemViewModel(newRecordUploaded: newRecordUploaded) 
     
+    // State variables for edit record's name sheet
     @State private var selectedRecording: Record?
     @State private var newShowName = ""
     @State var showEditSheet = false
-    
     @State private var editSheetID = UUID()
     
+    // List of emojis which user can assign to the record
+    let emojis = ["🔘", "😊", "😢", "😡", "😂", "😱", "❤️", "👍", "👎"]
+    
     var body: some View {
+        // Page title
         Text("Your Records")
             .padding(.top, 20)
-            .font(.title) // Make the text bigger
+            .font(.title)
             .frame(maxWidth: .infinity, alignment: .center)
             .bold()
 
@@ -33,57 +37,73 @@ struct RecordItemView: View {
                 .foregroundColor(.gray)
         }
         .padding(.top, 10)
+        
+        // List of the user's records loaded from firebase
         List {
-                // @State var isPlaying = false
                 ForEach(viewModel.recordings) { recording in
                     HStack {
                         VStack{
+                            
+                            // Name of the reocrd
                             Text(recording.showName)
                                 .bold()
                                 .offset(x: -10)
                                 .onTapGesture {
-                                    print("Recording tapped: \(recording.showName)")
+                                    // Open editing sheet when record name tapped
                                     selectedRecording = recording
                                     newShowName = recording.showName
-                                    print("Selected recording: \(String(describing: selectedRecording?.showName))")
-                                   // editSheetID = UUID()
                                     showEditSheet.toggle()
-                                    print("Show edit sheet: \(showEditSheet)")
                                 }
                             
+                            //Date and time of creation
                             Text(viewModel.convertTimestampToString(recording.timestamp))
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
                         }
                         Spacer()
+                        
+                        // Show current emoji and on tap show menu for emoji change
+                            ForEach(emojis, id: \.self) { emoji in
+                                Button(action: {
+                                    viewModel.updateEmoji(id: recording.id, newEmoji: emoji)
+                                }) {
+                                    Text(emoji)
+                                }
+                            }
+                        } label: {
+                            Text(recording.emoji)
+                                .font(.system(size: 27))
+                        }
+                        
+                        // Show palay/stop button according to the playback state
                         if viewModel.currentlyPlayingId == recording.id {
                             Button(action: {
-                                // isPlaying = false
                                 viewModel.stop()
                             }) {
                                 Image(systemName: "stop.circle")
                                     .font(.system(size: 27))
                             }
-                            .buttonStyle(PlainButtonStyle()) // Ensure no additional button padding
-                            .frame(width: 27, height: 27) // Constrain the button's frame to the icon's size
+                            .buttonStyle(PlainButtonStyle())
+                            .frame(width: 27, height: 27)
                             .contentShape(Rectangle())
                         } else{
                             Button(action: {
-                                //isPlaying = true
                                 viewModel.play(url: recording.remoteURL, id: recording.id)
                             }) {
                                 Image(systemName: "play.circle")
                                     .font(.system(size: 27))
-                                    .buttonStyle(PlainButtonStyle()) // Ensure no additional button padding
-                                    .frame(width: 27, height: 27) // Constrain the button's frame to the icon's size
+                                    .buttonStyle(PlainButtonStyle())
+                                    .frame(width: 27, height: 27)
                                     .contentShape(Rectangle())
                             }
-                            .buttonStyle(PlainButtonStyle()) // Ensure no additional button padding
-                            .frame(width: 27, height: 27) // Constrain the button's frame to the icon's size
+                            .buttonStyle(PlainButtonStyle())
+                            .frame(width: 27, height: 27)
                             .contentShape(Rectangle())
                         }
                     }
                     .swipeActions{
+                        
+                        // Delete record with swipe gesture
                         Button("Delete") {
                             viewModel.delete(id: recording.id, url: recording.remoteURL)
                         }
@@ -96,12 +116,16 @@ struct RecordItemView: View {
                 }
             }
             .refreshable {
+                
+                // Refresh list whith refresh gesture
                 withAnimation{
                     viewModel.refresh()
                 }
             }
             .listStyle(PlainListStyle())
             .sheet(isPresented: $showEditSheet) {
+                
+                // Show edit sheet when record name clicked
                 if let recording = selectedRecording {
                     VStack {
                         TextField("New Show Name", text: $newShowName)
@@ -115,16 +139,14 @@ struct RecordItemView: View {
                         .padding()
                     }
                     .padding()
-                } else{
-                    Button("PICA"){}
                 }
             }
-            //change uuid to force sheet to reconstruct after every selectedrecording change
+    
+            // Change uuid to force sheet to reconstruct after every selectedrecording change
             .onChange(of: selectedRecording){
                 editSheetID = UUID()
             }
         }
-
 }
 
 #Preview {

@@ -14,15 +14,16 @@ class LoginViewModel: ObservableObject{
     @Published var errorMessage = ""
     init() {}
     
+    // Try to log in
     func login() {
         guard validate() else{
             return
         }
-        //Try to log in
-        Auth.auth().signIn(withEmail: email, password: password)
         
+        Auth.auth().signIn(withEmail: email, password: password)
     }
     
+    // Validate user inputs
     private func validate() -> Bool {
         errorMessage = ""
         guard !email.trimmingCharacters(in: .whitespaces).isEmpty, !password.trimmingCharacters(in: .whitespaces).isEmpty else {

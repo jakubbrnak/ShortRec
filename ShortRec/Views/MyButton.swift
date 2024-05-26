@@ -14,9 +14,10 @@ struct MyButton: View {
     
     var body: some View {
         Button{
-            //action
+            //action to perform
             action()
         } label: {
+            //title and style of the butotn
             ZStack{
                 RoundedRectangle(cornerRadius: 10)
                     .foregroundColor(background)

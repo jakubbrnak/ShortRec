@@ -23,29 +23,33 @@ struct RecordsView: View {
     var body: some View {
 
         VStack {
+            //Show list of user's records
             RecordItemView()
+            
+            //Button that changes appearence based on the recording session state
             Text(viewModel.isRecording ? "Recording..." : "Hold to Record")
                 .padding()
                 .foregroundColor(.white)
                 .background(viewModel.isRecording ? Color.red : Color.blue)
                 .cornerRadius(10)
                 .gesture(
-                    DragGesture(minimumDistance: 0) // Minimum distance ensures any touch is registered
+                    DragGesture(minimumDistance: 0)
                         .onChanged { _ in
+                            //Start recording (only if not already recording)
                             if !viewModel.isRecording{
                                 viewModel.startRecording()
                             }
                         }
                         .onEnded { _ in
+                            //Stop recording
                             viewModel.stopRecording()
                         }
                 )
-                .padding(.bottom, 50)
+                .padding(.bottom, 76)
             
             Spacer()
         }
         .padding()
-
     }
 }
 

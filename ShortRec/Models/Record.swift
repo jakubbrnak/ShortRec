@@ -14,4 +14,5 @@ struct Record: Identifiable, Equatable {
     let fileName: String
     let remoteURL: URL
     let timestamp: Timestamp
+    var emoji: String
 }

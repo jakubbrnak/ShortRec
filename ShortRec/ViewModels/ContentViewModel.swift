@@ -13,16 +13,20 @@ class ContentViewModel: ObservableObject {
     private var handler: AuthStateDidChangeListenerHandle?
     
     init() {
+        // Set current user uid when sighned in
         self.handler = Auth.auth().addStateDidChangeListener { [weak self]_, user in
             DispatchQueue.main.async{
                 self?.currentUserId = user?.uid ?? ""
             }
         }
     }
+    
+    // Check if user is signed in
     public var isSignedIn: Bool{
         return Auth.auth().currentUser != nil
     }
     
+    // Try to log out
     func logout() {
         do {
             try Auth.auth().signOut()

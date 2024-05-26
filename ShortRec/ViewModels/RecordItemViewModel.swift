@@ -18,6 +18,7 @@ class RecordItemViewModel: ObservableObject {
     var cancellables = Set<AnyCancellable>()
     
     init(newRecordUploaded: PassthroughSubject<Void, Never>) {
+        
         // Subscribe to the newRecordUploaded subject
         newRecordUploaded
             .sink { [weak self] in
@@ -29,73 +30,104 @@ class RecordItemViewModel: ObservableObject {
         fetchRecordings()
     }
     
+    // Fuction to fetch user's recording in case of load or refresh
     func fetchRecordings() {
+        
+        // Check if user is logged in
         guard let user = Auth.auth().currentUser else {
             print("User not logged in")
             return
         }
         
+        // Initialize db in program
         let db = Firestore.firestore()
+        
+        // Get desired documents from db
         db.collection("users").document(user.uid).collection("audioRecords").getDocuments { snapshot, error in
             guard let documents = snapshot?.documents else {
                 print("No recordings found or error: \(String(describing: error?.localizedDescription))")
                 return
             }
             
+            // Iterate through fetched documents and create local array of recordings for display
             for document in documents {
                 if let showName = document.data()["showName"] as? String,
                     let fileName = document.data()["fileName"] as? String,
                    let id = document.data()["id"] as? String,
                    let urlString = document.data()["remoteURL"] as? String,
                    let timestamp = document.data()["timestamp"] as? Timestamp,
+                   let emoji = document.data()["emoji"] as? String,
                    let remoteURL = URL(string: urlString) {
+                    
+                    // Add recording to the display if not already present
                     if !self.recordings.contains(where: { $0.remoteURL == remoteURL }) {
-                        self.addRecordingToList(showName: showName, id: id, fileName: fileName, remoteURL: remoteURL, timestamp: timestamp)
+                        self.addRecordingToList(showName: showName, id: id, fileName: fileName, remoteURL: remoteURL, timestamp: timestamp, emoji: emoji)
                     }
                 }
             }
         }
     }
     
-    private func addRecordingToList(showName: String, id: String, fileName: String, remoteURL: URL, timestamp: Timestamp) {
-        let recording = Record(showName: showName, id: id, fileName: fileName, remoteURL: remoteURL, timestamp: timestamp)
+    // Function for adding new record to the lsit of displayed records
+    private func addRecordingToList(showName: String, id: String, fileName: String, remoteURL: URL, timestamp: Timestamp, emoji: String) {
+        let recording = Record(showName: showName, id: id, fileName: fileName, remoteURL: remoteURL, timestamp: timestamp, emoji: emoji)
+        
+        // Append new record from maim thread to ensure correct UI update
         DispatchQueue.main.async {
             self.recordings.append(recording)
         }
     }
     
-    
+    // Initialize audioplayer object for playback
     var player: AVPlayer?
     @Published var currentlyPlayingId: String? = nil
     private var cancellable: AnyCancellable?
     
+    // Function for starting playback
     func play(url: URL, id: String) {
-        //isPlaying = true
+        
+        // Ensure correct audiosession setting for playback
+        let session = AVAudioSession.sharedInstance()
+        do {
+            try session.setCategory(.playback, mode: .default)
+            try session.setActive(true)
+        } catch {
+            print("Error setting up audio session for playback: \(error.localizedDescription)")
+        }
+        
+        // Set current playing playback to ensure correct state of corresponding play/stop button
         currentlyPlayingId = id
+        
+        // Set url where playing record is stored
         player = AVPlayer(url: url)
         
+        // Wait for record to finish and update play/stop button to correct position
         cancellable = NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
                     .sink { [weak self] _ in
                         self?.currentlyPlayingId = nil
                     }
         
+        // Start record playback
         player?.play()
-    
     }
     
+    // Stop record playback
     func stop() {
-        //isPlaying = false
         currentlyPlayingId = nil
         player?.pause()
         player = nil
     }
     
+    // Delete corresponding record in case of swipe gesture event
     func delete(id: String, url: URL) {
+        
+        // Check if user is logged in
         guard let user = Auth.auth().currentUser else {
             print("User not logged in")
             return
         }
         
+        // Initialize db in program
         let db = Firestore.firestore()
         let storage = Storage.storage()
         
@@ -116,20 +148,22 @@ class RecordItemViewModel: ObservableObject {
                     return
                 }
                 
+                // Check if desired document was found
                 guard let documents = snapshot?.documents else {
                     print("No documents found to delete")
                     return
                 }
                 
+                // Delete document from db
                 for document in documents {
                     document.reference.delete { error in
                         if let error = error {
                             print("Error deleting Firestore document: \(error.localizedDescription)")
                         } else {
                             DispatchQueue.main.async {
+                                
                                 // Remove the record from the local array
                                 self?.recordings.removeAll { $0.id == id }
-                                //newRecordUploaded.send()
                             }
                         }
                     }
@@ -138,7 +172,7 @@ class RecordItemViewModel: ObservableObject {
         }
     }
     
-    
+    // Helper function to convert Firebase timestamp to string
     func convertTimestampToString(_ timestamp: Timestamp) -> String {
         let date = timestamp.dateValue()
         let dateFormatter = DateFormatter()
@@ -146,15 +180,58 @@ class RecordItemViewModel: ObservableObject {
         return dateFormatter.string(from: date)
     }
     
+    // Refresh function that is called when refresh gesture is performed
     func refresh(){
-        recordings = []
-        fetchRecordings()
+        DispatchQueue.main.async{
+            self.recordings = []
+            self.fetchRecordings()
+        }
     }
     
-    
-    
-    
+    // Function to update ShowName when changed by user
     func updateShowName(id: String, newShowName: String) {
+        
+        // Check if user is logged in
+        guard let user = Auth.auth().currentUser else {
+            print("User not logged in")
+            return
+        }
+        
+        // Initialize db in program
+        let db = Firestore.firestore()
+        let collectionRef = db.collection("users").document(user.uid).collection("audioRecords")
+        
+        collectionRef.whereField("id", isEqualTo: id).getDocuments { [weak self] (querySnapshot, error) in
+            
+            // Check if document was found
+            if let error = error {
+                print("Error fetching document: \(error.localizedDescription)")
+                return
+            }
+            guard let document = querySnapshot?.documents.first else {
+                print("Document with id \(id) not found")
+                return
+            }
+            
+            // Update the data in the db and also in local local array
+            document.reference.updateData(["showName": newShowName]) { error in
+                if let error = error {
+                    print("Error updating show name: \(error.localizedDescription)")
+                } else {
+                    // Update the local recording's show name
+                    DispatchQueue.main.async{
+                        if let index = self?.recordings.firstIndex(where: { $0.id == id }) {
+                            self?.recordings[index].showName = newShowName
+                        }
+                        print("Show name successfully updated")
+                    }
+
+                }
+            }
+        }
+    }
+    
+    func updateEmoji(id: String, newEmoji: String) {
         guard let user = Auth.auth().currentUser else {
             print("User not logged in")
             return
@@ -174,18 +251,19 @@ class RecordItemViewModel: ObservableObject {
                 return
             }
             
-            document.reference.updateData(["showName": newShowName]) { error in
+            document.reference.updateData(["emoji": newEmoji]) { error in
                 if let error = error {
-                    print("Error updating show name: \(error.localizedDescription)")
+                    print("Error updating emoji: \(error.localizedDescription)")
                 } else {
-                    // Update the local recording's show name
+                    // Update the local recording's emoji
                     if let index = self?.recordings.firstIndex(where: { $0.id == id }) {
-                        self?.recordings[index].showName = newShowName
+                        self?.recordings[index].emoji = newEmoji
                     }
-                    print("Show name successfully updated")
+                    print("Emoji successfully updated")
                 }
             }
         }
     }
+
 
 }
