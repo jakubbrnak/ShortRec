@@ -67,12 +67,20 @@ class RecordItemViewModel: ObservableObject {
     
     var player: AVPlayer?
     @Published var currentlyPlayingId: String? = nil
+    private var cancellable: AnyCancellable?
     
     func play(url: URL, id: String) {
         //isPlaying = true
         currentlyPlayingId = id
         player = AVPlayer(url: url)
+        
+        cancellable = NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
+                    .sink { [weak self] _ in
+                        self?.currentlyPlayingId = nil
+                    }
+        
         player?.play()
+    
     }
     
     func stop() {
@@ -138,9 +146,46 @@ class RecordItemViewModel: ObservableObject {
         return dateFormatter.string(from: date)
     }
     
+    func refresh(){
+        recordings = []
+        fetchRecordings()
+    }
+    
+    
+    
+    
+    func updateShowName(id: String, newShowName: String) {
+        guard let user = Auth.auth().currentUser else {
+            print("User not logged in")
+            return
+        }
+
+        let db = Firestore.firestore()
+        let collectionRef = db.collection("users").document(user.uid).collection("audioRecords")
+        
+        collectionRef.whereField("id", isEqualTo: id).getDocuments { [weak self] (querySnapshot, error) in
+            if let error = error {
+                print("Error fetching document: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let document = querySnapshot?.documents.first else {
+                print("Document with id \(id) not found")
+                return
+            }
+            
+            document.reference.updateData(["showName": newShowName]) { error in
+                if let error = error {
+                    print("Error updating show name: \(error.localizedDescription)")
+                } else {
+                    // Update the local recording's show name
+                    if let index = self?.recordings.firstIndex(where: { $0.id == id }) {
+                        self?.recordings[index].showName = newShowName
+                    }
+                    print("Show name successfully updated")
+                }
+            }
+        }
+    }
+
 }
-
-
-
-
-

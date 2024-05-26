@@ -6,12 +6,13 @@
 //
 
 import Foundation
+import Firebase
 
 struct User: Codable {
     let id: String
     let name: String
     let email: String
-    let joined: TimeInterval
+    let joined: Timestamp
     
     func toDictionary() -> [String: Any]? {
            let encoder = JSONEncoder()

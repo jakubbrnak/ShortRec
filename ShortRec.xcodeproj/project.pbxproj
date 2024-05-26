@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B01B7F62C02876C0027606B /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B01B7F52C02876C0027606B /* ProfileViewModel.swift */; };
 		3B33F9B92BE7BD5F008F823E /* ShortRecApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B33F9B82BE7BD5F008F823E /* ShortRecApp.swift */; };
 		3B33F9BB2BE7BD5F008F823E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B33F9BA2BE7BD5F008F823E /* ContentView.swift */; };
 		3B33F9BD2BE7BD61008F823E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B33F9BC2BE7BD61008F823E /* Assets.xcassets */; };
@@ -33,6 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3B01B7F52C02876C0027606B /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		3B33F9B52BE7BD5F008F823E /* ShortRec.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShortRec.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B33F9B82BE7BD5F008F823E /* ShortRecApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortRecApp.swift; sourceTree = "<group>"; };
 		3B33F9BA2BE7BD5F008F823E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 				3B33F9E72BE7D47E008F823E /* ContentViewModel.swift */,
 				3B33F9EB2BE7D7DD008F823E /* RecordsViewModel.swift */,
 				3B33F9EF2BE7FACA008F823E /* RecordItemViewModel.swift */,
+				3B01B7F52C02876C0027606B /* ProfileViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -245,6 +248,7 @@
 				3B33F9E82BE7D47E008F823E /* ContentViewModel.swift in Sources */,
 				3B33F9DC2BE7C9B6008F823E /* LoginViewModel.swift in Sources */,
 				3B33F9E22BE7CDB7008F823E /* User.swift in Sources */,
+				3B01B7F62C02876C0027606B /* ProfileViewModel.swift in Sources */,
 				3B33F9D62BE7C585008F823E /* ProfileView.swift in Sources */,
 				3B33F9D82BE7C591008F823E /* LoginView.swift in Sources */,
 				3B33F9B92BE7BD5F008F823E /* ShortRecApp.swift in Sources */,

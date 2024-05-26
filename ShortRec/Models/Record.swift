@@ -8,8 +8,8 @@
 import Foundation
 import Firebase
 
-struct Record: Identifiable {
-    let showName: String
+struct Record: Identifiable, Equatable {
+    var showName: String
     let id: String
     let fileName: String
     let remoteURL: URL

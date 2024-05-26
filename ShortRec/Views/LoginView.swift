@@ -12,7 +12,16 @@ struct LoginView: View {
     @StateObject var viewModel = LoginViewModel()
     var body: some View {
         NavigationView{
+         /*   HStack {
+                Image(systemName:"mic.fill")
+                           .foregroundColor(.blue)
+                    
+                Image(systemName:"mic.fill")
+                           .foregroundColor(.blue)
+                   }*/
             VStack{
+
+                
                 Text("Log In")
                     .bold()
           
