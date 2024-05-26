@@ -71,11 +71,9 @@ class RecordItemViewModel: ObservableObject {
     // Function for adding new record to the lsit of displayed records
     private func addRecordingToList(showName: String, id: String, fileName: String, remoteURL: URL, timestamp: Timestamp, emoji: String) {
         let recording = Record(showName: showName, id: id, fileName: fileName, remoteURL: remoteURL, timestamp: timestamp, emoji: emoji)
-        
-        // Append new record from maim thread to ensure correct UI update
-        DispatchQueue.main.async {
+
             self.recordings.append(recording)
-        }
+        
     }
     
     // Initialize audioplayer object for playback
@@ -182,10 +180,10 @@ class RecordItemViewModel: ObservableObject {
     
     // Refresh function that is called when refresh gesture is performed
     func refresh(){
-        DispatchQueue.main.async{
+            
+            // Empty the recordings list to prevent showing non existing records
             self.recordings = []
             self.fetchRecordings()
-        }
     }
     
     // Function to update ShowName when changed by user
@@ -219,28 +217,31 @@ class RecordItemViewModel: ObservableObject {
                     print("Error updating show name: \(error.localizedDescription)")
                 } else {
                     // Update the local recording's show name
-                    DispatchQueue.main.async{
                         if let index = self?.recordings.firstIndex(where: { $0.id == id }) {
                             self?.recordings[index].showName = newShowName
                         }
-                        print("Show name successfully updated")
-                    }
-
                 }
             }
         }
     }
     
+    // Function to update emoji
     func updateEmoji(id: String, newEmoji: String) {
+        
+        // Check if the user is logged in
         guard let user = Auth.auth().currentUser else {
             print("User not logged in")
             return
         }
-
+        
+        // Initialize db in the program
         let db = Firestore.firestore()
         let collectionRef = db.collection("users").document(user.uid).collection("audioRecords")
         
+        // Find record to change
         collectionRef.whereField("id", isEqualTo: id).getDocuments { [weak self] (querySnapshot, error) in
+            
+            // Check if document found
             if let error = error {
                 print("Error fetching document: \(error.localizedDescription)")
                 return
@@ -251,15 +252,16 @@ class RecordItemViewModel: ObservableObject {
                 return
             }
             
+            // Update emoji in db
             document.reference.updateData(["emoji": newEmoji]) { error in
                 if let error = error {
                     print("Error updating emoji: \(error.localizedDescription)")
                 } else {
+                    
                     // Update the local recording's emoji
                     if let index = self?.recordings.firstIndex(where: { $0.id == id }) {
                         self?.recordings[index].emoji = newEmoji
                     }
-                    print("Emoji successfully updated")
                 }
             }
         }

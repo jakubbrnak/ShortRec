@@ -13,7 +13,7 @@ struct RecordItemView: View {
     @StateObject var viewModel = RecordItemViewModel(newRecordUploaded: newRecordUploaded) 
     
     // State variables for edit record's name sheet
-    @State private var selectedRecording: Record?
+    @State private var selectedRecording: Record? 
     @State private var newShowName = ""
     @State var showEditSheet = false
     @State private var editSheetID = UUID()
@@ -63,18 +63,18 @@ struct RecordItemView: View {
                         Spacer()
                         
                         // Show current emoji and on tap show menu for emoji change
-                            ForEach(emojis, id: \.self) { emoji in
-                                Button(action: {
-                                    viewModel.updateEmoji(id: recording.id, newEmoji: emoji)
-                                }) {
-                                    Text(emoji)
-                                }
-                            }
-                        } label: {
-                            Text(recording.emoji)
-                                .font(.system(size: 27))
-                        }
-                        
+                        Menu {
+                             ForEach(emojis, id: \.self) { emoji in
+                                 Button(action: {
+                                     viewModel.updateEmoji(id: recording.id, newEmoji: emoji)
+                                 }) {
+                                     Text(emoji)
+                                 }
+                             }
+                         } label: {
+                             Text(recording.emoji)
+                                 .font(.system(size: 27))
+                         }
                         // Show palay/stop button according to the playback state
                         if viewModel.currentlyPlayingId == recording.id {
                             Button(action: {
@@ -116,8 +116,7 @@ struct RecordItemView: View {
                 }
             }
             .refreshable {
-                
-                // Refresh list whith refresh gesture
+                // Refresh list whith refresh gesture   
                 withAnimation{
                     viewModel.refresh()
                 }
