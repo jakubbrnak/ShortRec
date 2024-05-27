@@ -8,6 +8,7 @@
 import SwiftUI
 import FirebaseCore
 
+// Main app start
 @main
 struct ShortRecApp: App { 
     init() {

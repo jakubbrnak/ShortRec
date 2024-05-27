@@ -13,6 +13,7 @@ class ContentViewModel: ObservableObject {
     private var handler: AuthStateDidChangeListenerHandle?
     
     init() {
+        
         // Set current user uid when sighned in
         self.handler = Auth.auth().addStateDidChangeListener { [weak self]_, user in
             DispatchQueue.main.async{

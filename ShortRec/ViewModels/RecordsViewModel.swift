@@ -20,6 +20,8 @@ class RecordsViewModel: ObservableObject {
     @Published var isRecording = false
     
     init() {
+        
+        // Request mic, if denied show allert with option to open settings
         requestMicrophoneAccess()
     }
     
@@ -50,7 +52,6 @@ class RecordsViewModel: ObservableObject {
         do {
             audioRecorder = try AVAudioRecorder(url: fileURL!, settings: settings)
             audioRecorder?.prepareToRecord()
-            print("Audio recorder prepared successfully")
         } catch {
             print("Audio Recorder setup error: \(error.localizedDescription)")
         }
@@ -122,7 +123,6 @@ class RecordsViewModel: ObservableObject {
                     if let error = error {
                         print("Error saving metadata: \(error.localizedDescription)")
                     } else {
-                        print("Successfully stored metadata in Firestore")
                         
                         // Delete the local file after successful upload
                         self.deleteLocalFile(at: fileURL)
@@ -142,8 +142,8 @@ class RecordsViewModel: ObservableObject {
         }
     }
     
+    // Functions to check mic permission and ask for it in case of deny
     @Published var micPermission = false
-    
     func requestMicrophoneAccess() {
         AVAudioApplication.requestRecordPermission { granted in
             if granted {
