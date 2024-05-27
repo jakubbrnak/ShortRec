@@ -267,6 +267,4 @@ class RecordItemViewModel: ObservableObject {
             }
         }
     }
-
-
 }

@@ -77,7 +77,10 @@ class RecordsViewModel: ObservableObject {
         // Stop recording
         recorder.stop()
         audioRecorder = nil
-        isRecording = false
+        DispatchQueue.main.async{
+            self.isRecording = false
+        }
+    
         
         // Upload the file to Firebase Storage
         guard let fileURL = fileURL, let user = Auth.auth().currentUser else {

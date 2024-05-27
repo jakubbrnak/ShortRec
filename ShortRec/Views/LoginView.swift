@@ -14,11 +14,15 @@ struct LoginView: View {
     var body: some View {
         NavigationView{
             VStack{
+                
+                // Title
                 Text("Log In")
                     .padding(.top, 120)
                     .font(.title)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .bold()
+                
+                // Design icons
                 HStack {
                     Spacer()
                     Image(systemName: "speaker.2.fill")
@@ -38,7 +42,7 @@ struct LoginView: View {
                 }
                 .padding(.top, 20)
 
-          
+                // Form for user's input
                 Form{
                     if !viewModel.errorMessage.isEmpty{
                         Text(viewModel.errorMessage)
@@ -60,15 +64,23 @@ struct LoginView: View {
                         viewModel.login()
                         }
                         .padding()
+                    
                 }
                 .scrollContentBackground(.hidden)
                 .shadow(color: Color.primary.opacity(0.2), radius: 5)
+                
                 
                 VStack{
                     Text("New around here?")
                     NavigationLink("Create An Account", destination: RegisterView())
                 }
-                .padding(.bottom, 50)
+                .padding()
+                
+                Text("Note: Ensure stable internet connection when trying to log in or register")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 20)
                 
                 Spacer()
             }

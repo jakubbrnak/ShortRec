@@ -61,7 +61,7 @@ struct RecordItemView: View {
                                 showEditSheet.toggle()
                             }
                             
-                            //Date and time of creation
+                            // Date and time of creation
                             Text(viewModel.convertTimestampToString(recording.timestamp))
                                 .font(.subheadline)
                                 .foregroundColor(.gray)

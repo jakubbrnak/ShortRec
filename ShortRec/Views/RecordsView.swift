@@ -7,15 +7,6 @@
 
 import SwiftUI
 
-let items = [
-    "Interview with Alice",
-    "Project Meeting",
-    "Lecture on SwiftUI",
-    "Team Sync Call",
-    "Strategy Planning Session"
-]
-
-
 struct RecordsView: View {
     @StateObject var viewModel = RecordsViewModel() 
     @StateObject private var networkMonitor = NetworkMonitor()

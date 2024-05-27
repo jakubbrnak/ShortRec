@@ -15,7 +15,6 @@ struct ShortRecApp: App {
         FirebaseApp.configure()
     }
     
-    
     var body: some Scene {
         WindowGroup {
             ContentView()
