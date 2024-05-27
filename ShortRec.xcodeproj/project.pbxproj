@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3B01B7F62C02876C0027606B /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B01B7F52C02876C0027606B /* ProfileViewModel.swift */; };
+		3B01B7F82C03D6020027606B /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B01B7F72C03D6020027606B /* NetworkMonitor.swift */; };
+		3B01B7FA2C0416160027606B /* requestMic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B01B7F92C0416160027606B /* requestMic.swift */; };
 		3B33F9B92BE7BD5F008F823E /* ShortRecApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B33F9B82BE7BD5F008F823E /* ShortRecApp.swift */; };
 		3B33F9BB2BE7BD5F008F823E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B33F9BA2BE7BD5F008F823E /* ContentView.swift */; };
 		3B33F9BD2BE7BD61008F823E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B33F9BC2BE7BD61008F823E /* Assets.xcassets */; };
@@ -35,6 +37,8 @@
 
 /* Begin PBXFileReference section */
 		3B01B7F52C02876C0027606B /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		3B01B7F72C03D6020027606B /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
+		3B01B7F92C0416160027606B /* requestMic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = requestMic.swift; sourceTree = "<group>"; };
 		3B33F9B52BE7BD5F008F823E /* ShortRec.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShortRec.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B33F9B82BE7BD5F008F823E /* ShortRecApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortRecApp.swift; sourceTree = "<group>"; };
 		3B33F9BA2BE7BD5F008F823E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -151,6 +155,8 @@
 				3B33F9BC2BE7BD61008F823E /* Assets.xcassets */,
 				3B33F9CF2BE7C1F3008F823E /* GoogleService-Info.plist */,
 				3B6900252C0134C4000D2F81 /* Notificaiton.swift */,
+				3B01B7F72C03D6020027606B /* NetworkMonitor.swift */,
+				3B01B7F92C0416160027606B /* requestMic.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -239,9 +245,11 @@
 				3B33F9EA2BE7D7C5008F823E /* RecordsView.swift in Sources */,
 				3B6900242C00A9C0000D2F81 /* Record.swift in Sources */,
 				3B33F9E42BE7CE12008F823E /* RegisterView.swift in Sources */,
+				3B01B7FA2C0416160027606B /* requestMic.swift in Sources */,
 				3B6900262C0134C4000D2F81 /* Notificaiton.swift in Sources */,
 				3B33F9EC2BE7D7DD008F823E /* RecordsViewModel.swift in Sources */,
 				3B33F9F02BE7FACA008F823E /* RecordItemViewModel.swift in Sources */,
+				3B01B7F82C03D6020027606B /* NetworkMonitor.swift in Sources */,
 				3B33F9DE2BE7CAF6008F823E /* MyButton.swift in Sources */,
 				3B33F9E02BE7CD60008F823E /* RegisterViewModel.swift in Sources */,
 				3B33F9EE2BE7FAB3008F823E /* RecordItemView.swift in Sources */,

@@ -65,6 +65,7 @@ class RecordItemViewModel: ObservableObject {
                     }
                 }
             }
+            self.recordings.sort{ $0.timestamp.dateValue() > $1.timestamp.dateValue() }
         }
     }
     
@@ -72,7 +73,7 @@ class RecordItemViewModel: ObservableObject {
     private func addRecordingToList(showName: String, id: String, fileName: String, remoteURL: URL, timestamp: Timestamp, emoji: String) {
         let recording = Record(showName: showName, id: id, fileName: fileName, remoteURL: remoteURL, timestamp: timestamp, emoji: emoji)
 
-            self.recordings.append(recording)
+        self.recordings.insert(recording, at:0)
         
     }
     

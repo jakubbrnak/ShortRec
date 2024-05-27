@@ -1,3 +1,10 @@
+//
+//  ProfileView.swift
+//  ShortRec
+//
+//  Created by Jakub Brnák on 05/05/2024.
+//
+
 import SwiftUI
 import FirebaseFirestore
 import FirebaseAuth
@@ -26,35 +33,41 @@ struct ProfileView: View {
                         // User Info
                         VStack(alignment: .leading, spacing: 10) {
                             HStack {
+                                Spacer()
                                 Text("Name:")
                                     .font(.headline)
                                     .foregroundColor(.gray)
-                                Spacer()
+                              
                                 Text(user.name)
                                     .font(.title2)
                                     .fontWeight(.semibold)
+                                Spacer()
                             }
                             .padding(.horizontal)
                             
                             HStack {
+                                Spacer()
                                 Text("Email:")
                                     .font(.headline)
                                     .foregroundColor(.gray)
-                                Spacer()
+                            
                                 Text(user.email)
                                     .font(.subheadline)
                                     .fontWeight(.regular)
+                                Spacer()
                             }
                             .padding(.horizontal)
                             
                             HStack {
+                                Spacer()
                                 Text("Joined:")
                                     .font(.headline)
                                     .foregroundColor(.gray)
-                                Spacer()
+                            
                                 Text(user.joined.dateValue(), style: .date)
                                     .font(.subheadline)
                                     .fontWeight(.regular)
+                                Spacer()
                             }
                             .padding(.horizontal)
                         }

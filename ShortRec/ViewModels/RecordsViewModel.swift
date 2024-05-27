@@ -11,6 +11,7 @@ import Foundation
 import AVFoundation
 import FirebaseStorage
 import Combine
+import UIKit
 
 class RecordsViewModel: ObservableObject {
     private var audioRecorder: AVAudioRecorder?
@@ -18,7 +19,9 @@ class RecordsViewModel: ObservableObject {
     
     @Published var isRecording = false
     
-    init() {}
+    init() {
+        requestMicrophoneAccess()
+    }
     
     // Setup recorder for new recording session
     func setupRecorder() {
@@ -81,21 +84,6 @@ class RecordsViewModel: ObservableObject {
             return
         }
         
-        
-        /*do {
-            let fileAttributes = try FileManager.default.attributesOfItem(atPath: fileURL.path)
-            let fileSize = fileAttributes[.size] as? Int64 ?? 0
-            print("File size: \(fileSize) bytes")
-
-            if fileSize == 0 {
-                print("File is empty, aborting upload.")
-                return
-            }
-        } catch {
-            print("Error getting file size: \(error.localizedDescription)")
-            return
-        }*/
-        
         // Initialize Firebase Storage
         let storage = Storage.storage()
         let storageRef = storage.reference().child("audio/\(user.uid)/\(fileURL.lastPathComponent)")
@@ -154,5 +142,28 @@ class RecordsViewModel: ObservableObject {
         }
     }
     
+    @Published var micPermission = false
+    
+    func requestMicrophoneAccess() {
+        AVAudioApplication.requestRecordPermission { granted in
+            if granted {
+                self.micPermission = false
+            } else {
+                self.micPermission = true
+                print("Microphone access denied")
+            }
+        }
+    }
+    
+    func openAppSettings() {
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                return
+            }
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl, completionHandler: { success in
+                    print("Settings opened: \(success)") // Prints true
+                })
+            }
+        }
    
 }

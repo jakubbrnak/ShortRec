@@ -8,6 +8,7 @@
 import Foundation
 import Firebase
 
+// Struct which represents one voice record
 struct Record: Identifiable, Equatable {
     var showName: String
     let id: String

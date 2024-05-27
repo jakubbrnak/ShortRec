@@ -1,8 +1,8 @@
 //
-//  TLButton.swift
-//  ToDoListApp
+//  MyButton.swift
+//  ShortRec
 //
-//  Created by Jakub Brnák on 22/04/2024.
+//  Created by Jakub Brnák on 05/05/2024.
 //
 
 import SwiftUI

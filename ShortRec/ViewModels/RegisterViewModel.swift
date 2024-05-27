@@ -2,8 +2,9 @@
 //  RegisterViewViewModel.swift
 //  ShortRec
 //
-//  Created by Jakub Brnák on 27/03/2024.
+//  Created by Jakub Brnák on 05/05/2024.
 //
+
 import FirebaseFirestore
 import FirebaseAuth
 import Foundation

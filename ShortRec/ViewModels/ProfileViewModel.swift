@@ -1,8 +1,8 @@
 //
-//  UserViewModel.swift
+//  ProfileViewModel.swift
 //  ShortRec
 //
-//  Created by Jakub Brnák on 27/05/2024.
+//  Created by Jakub Brnák on 05/05/2024.
 //
 
 import Foundation
@@ -17,9 +17,12 @@ class ProfileViewModel: ObservableObject {
     private var auth = Auth.auth()
 
     init() {
+        
+        // Fetch user from db
         fetchUser()
     }
-
+    
+    // Function to fetch user from db
     func fetchUser() {
         guard let userId = auth.currentUser?.uid else {
             errorMessage = "No logged in user."
@@ -36,7 +39,8 @@ class ProfileViewModel: ObservableObject {
                 self?.errorMessage = "No user data found."
                 return
             }
-
+            
+            // Deserialize the data and construct user
             do {
                 let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
                 let user = try JSONDecoder().decode(User.self, from: jsonData)
@@ -48,7 +52,8 @@ class ProfileViewModel: ObservableObject {
             }
         }
     }
-
+    
+    // Function for logout
     func logout() {
         do {
             try auth.signOut()

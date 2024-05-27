@@ -8,4 +8,5 @@
 import Foundation
 import Combine
 
+// Publisher that signals when new record is uploaded
 let newRecordUploaded = PassthroughSubject<Void, Never>()

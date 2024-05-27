@@ -9,7 +9,7 @@ import SwiftUI
 import FirebaseCore
 
 @main
-struct ShortRecApp: App {
+struct ShortRecApp: App { 
     init() {
         FirebaseApp.configure()
     }

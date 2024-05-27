@@ -42,18 +42,24 @@ struct RecordItemView: View {
         List {
                 ForEach(viewModel.recordings) { recording in
                     HStack {
-                        VStack{
+                        VStack(alignment: .leading){
                             
                             // Name of the reocrd
-                            Text(recording.showName)
-                                .bold()
-                                .offset(x: -10)
-                                .onTapGesture {
-                                    // Open editing sheet when record name tapped
-                                    selectedRecording = recording
-                                    newShowName = recording.showName
-                                    showEditSheet.toggle()
-                                }
+                            HStack{
+                       
+                                Text(recording.showName)
+                                    .bold()
+                                
+                                // Icon to indicate that name is editable
+                                Image(systemName: "square.and.pencil")
+                                    .foregroundColor(Color.primary)
+                            }
+                            .onTapGesture {
+                                // Open editing sheet when record name tapped
+                                selectedRecording = recording
+                                newShowName = recording.showName
+                                showEditSheet.toggle()
+                            }
                             
                             //Date and time of creation
                             Text(viewModel.convertTimestampToString(recording.timestamp))
@@ -126,21 +132,49 @@ struct RecordItemView: View {
                 
                 // Show edit sheet when record name clicked
                 if let recording = selectedRecording {
-                    VStack {
+                    VStack{
+                        Spacer()
+                        
+                        Text("Edit Record Name")
+                            .font(.title)
+                            .padding(.top, 20)
+                            .bold()
+                        HStack {
+                            Text("Insert a new name for your record:")
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                            Spacer()
+                        }
+                        .padding(.top, 20)
+                        .padding(.horizontal, 20)
+                            
+                        
                         TextField("New Show Name", text: $newShowName)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .padding()
+                            .padding(.bottom, 8)
+                            .padding(.horizontal, 20)
                         
-                        Button("Done") {
+                        // Call function to upload change to db and close sheet
+                        Button(action: {
                             viewModel.updateShowName(id: recording.id, newShowName: newShowName)
                             showEditSheet = false
+                        }) {
+                            Text("Done")
+                                .bold()
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                                .padding(.horizontal, 20)
                         }
-                        .padding()
+                        
+                        Spacer()
                     }
-                    .padding()
+                    .padding(.bottom, 20)
                 }
             }
-    
+
             // Change uuid to force sheet to reconstruct after every selectedrecording change
             .onChange(of: selectedRecording){
                 editSheetID = UUID()
