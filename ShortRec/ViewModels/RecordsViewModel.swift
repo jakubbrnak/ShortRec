@@ -164,7 +164,7 @@ class RecordsViewModel: ObservableObject {
             }
             if UIApplication.shared.canOpenURL(settingsUrl) {
                 UIApplication.shared.open(settingsUrl, completionHandler: { success in
-                    print("Settings opened: \(success)") // Prints true
+                    print("Settings opened: \(success)")
                 })
             }
         }
